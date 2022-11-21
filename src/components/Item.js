@@ -1,0 +1,48 @@
+import React from "react";
+import "./Item.css";
+
+class Item extends React.Component {
+    state = {
+        id: this.props.item.id,
+        img: this.props.item.img,
+        name: this.props.item.name,
+        price: this.props.item.price,
+        mark: this.props.item.mark,
+        counter: 0,
+        clicked: false
+    };
+    countPrice = (event) => {
+        this.props.countPrice(this.state.price);
+        let counter = this.state.counter + 1;
+        this.setState({clicked: true, counter: counter})
+        console.log(this.state.counter)
+    };
+    render() {
+        return (
+            <figure className="ItemCard" key={this.state.id} id={this.state.id}>
+                <div className="ItemCard__image">
+                    <img src={this.state.img} alt={this.state.name} title={this.state.name}></img>
+                    <div className="ItemCard__add-button" onClick={this.countPrice}>
+                        <img title="Добавить" alt="Добавить" src="https://svgshare.com/i/oFP.svg"></img>
+                    </div>
+                </div>
+                <figcaption className="ItemCard__caption">
+                    <p>{this.state.name}</p>
+                    <div className="ItemCard__caption__subcaption">
+                        <p>{this.state.price} р.</p>
+                        <p className="mark">{this.state.mark}</p>
+                        {this.state.clicked === true ?
+                        <div className="Item__in-cart">
+                            &#10004;
+                            {this.state.counter}
+                        </div>
+                        : ""
+                        }
+                    </div>
+                </figcaption>
+            </figure>
+        );
+    };
+}
+
+export default Item;
