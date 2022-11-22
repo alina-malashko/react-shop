@@ -8,14 +8,14 @@ class Item extends React.Component {
         name: this.props.item.name,
         price: this.props.item.price,
         mark: this.props.item.mark,
-        counter: 0,
-        clicked: false
+        counter: this.props.counter,
+        clicked: this.props.clicked
     };
     countPrice = (event) => {
-        this.props.countPrice(this.state.price);
+        //this.props.countPrice(this.state.price);
         let counter = this.state.counter + 1;
-        this.setState({clicked: true, counter: counter})
-        console.log(this.state.counter)
+        this.props.rememberClicked(this.state.id, this.state.counter + 1, this.state.price);
+        this.setState({clicked: true, counter: counter});
     };
     render() {
         return (

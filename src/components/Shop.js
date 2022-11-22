@@ -1,17 +1,19 @@
 import React from "react";
 import "./Shop.css";
 import Item from "./Item.js";
-//import CartBtn from "./CartBtn.js";
 
 class Shop extends React.Component {
     state = {
+        knives: this.props.knives,
+        sortedKnives: this.props.knives.kitchen,
         kitchen: this.props.knives.kitchen,
         folding: this.props.knives.folding,
         sharpeners: this.props.knives.sharpeners,
         accessories: this.props.knives.accessories,
         category: "kitchen",
-        counter: 0,
-        sorted: "all"
+        counter: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
+        sorted: "all",
+        clickedProductsDataArray: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0}
     };
     updateCurrent = (event) => {
         if (event.target.closest(".Shop__Nav__btn")) {
@@ -30,19 +32,45 @@ class Shop extends React.Component {
         }
     };
     sort = (event) => {
+        let option;
         if (event.target.id === "new") {
+            option = "Новинка";
             this.setState({sorted: "new"});
         }
-        if (event.target.id === "popular") {
-            this.setState({sorted: "popular"});
-        }
         if (event.target.id === "all") {
+            option = "";
             this.setState({sorted: "all"});
         }
+        console.log(option)
+        let allKnives;
+        if (this.state.category === "kitchen") {
+          allKnives = [...this.state.kitchen];
+        }
+         if (this.state.category === "folding") {
+          allKnives = [...this.state.folding];
+        }
+         if (this.state.category === "sharpeners") {
+          allKnives = [...this.state.sharpeners];
+        }
+         if (this.state.category === "accessories") {
+          allKnives = [...this.state.accessories];
+        }
+        let sortedKnives = allKnives.filter(item => item.mark === option);
+        console.log(sortedKnives)
     };
-    countPrice = (price) => {
-        let newPrice = this.state.counter + price
-        this.setState({counter: newPrice});
+    /*countPrice = (price) => {
+        let newPrice = this.state.counter + price;
+        //this.setState({counter: newPrice});
+    };*/
+    rememberClicked = (id, counter, price) => {
+        console.log(price)
+        let clickedArray = {...this.state.clickedProductsDataArray};
+        let newId = id;
+        clickedArray[newId] = counter;
+        clickedArray["counter"] += price;
+        console.log(clickedArray)
+        localStorage.setItem("clickedProductsDataArray", JSON.stringify(clickedArray));
+        this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
     };
     render() {
         return (
@@ -92,29 +120,48 @@ class Shop extends React.Component {
                     <ul>
                         <li onClick={this.sort} id="all" className={this.state.sorted === "all" ? "sort" : ""}>Все</li>
                         <li onClick={this.sort} id="new" className={this.state.sorted === "new" ? "sort" : ""}>Новинки</li>
-                        <li onClick={this.sort} id="popular" className={this.state.sorted === "popular" ? "sort" : ""}>Популярное</li>
                     </ul>
                 </section>
                 <main className="Shop__content">
                     {this.state.category === "kitchen" ? 
-                        this.state.kitchen.map(el => 
-                            <Item key={el.id} item={el} countPrice={this.countPrice}></Item>
-                        )
+                        this.state.kitchen.map(el => {
+                            let newId = el.id.toString();
+                            if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
+                                return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            } else {
+                                return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            }
+                        })
                     : ""}
                     {this.state.category === "folding" ? 
-                        this.state.folding.map(el => 
-                            <Item key={el.id} item={el} countPrice={this.countPrice}></Item>
-                        )
+                        this.state.folding.map(el => {
+                            let newId = el.id.toString();
+                            if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
+                                return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            } else {
+                                return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            }
+                        })
                     : ""}
                     {this.state.category === "sharpeners" ? 
-                        this.state.sharpeners.map(el => 
-                            <Item key={el.id} item={el} countPrice={this.countPrice}></Item>
-                        )
+                        this.state.sharpeners.map(el => {
+                            let newId = el.id.toString();
+                            if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
+                                return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            } else {
+                                return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            }
+                        })
                     : ""}
                     {this.state.category === "accessories" ? 
-                        this.state.accessories.map(el => 
-                            <Item key={el.id} item={el} countPrice={this.countPrice}></Item>
-                        )
+                        this.state.accessories.map(el => {
+                            let newId = el.id.toString();
+                            if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
+                                return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            } else {
+                                return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            }
+                        })
                     : ""}
                 </main>
                 <footer className="Shop__footer">
@@ -126,4 +173,3 @@ class Shop extends React.Component {
 }
 
 export default Shop;
-
