@@ -25,7 +25,7 @@ class Router extends React.Component {
                 <Route path="/folding" element={<ShopFolding knives={this.props.folding}></ShopFolding>}></Route>
                 <Route path="/sharpeners" element={<ShopSharpeners knives={this.props.sharpeners}></ShopSharpeners>}></Route>
                 <Route path="/accessories" element={<ShopAccessories knives={this.props.accessories}></ShopAccessories>}></Route>
-                <Route path="/cart" element={<Cart></Cart>}></Route>
+                <Route path="/cart" element={<Cart knives={this.props.knives}></Cart>}></Route>
             </Routes>
         );
     };

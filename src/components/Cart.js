@@ -1,11 +1,14 @@
 import React from "react";
 import "./Cart.css";
 import CartItem from "./CartItem.js";
+import { NavLink } from 'react-router-dom';
+import {CSSTransition,TransitionGroup} from 'react-transition-group';
 
 class Cart extends React.Component {
     state = {
         knives: this.props.knives,
-        totalPrice: 0,
+        clickedProducts: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0},
+        totalPrice: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
     };
     delete = (id) => {
         let itemsList = [...this.state.knives];
@@ -21,7 +24,9 @@ class Cart extends React.Component {
                 <header>
                     <div className="Cart__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
-                        <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
+                        <NavLink to="/">
+                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
+                        </NavLink>
                     </div>
                 </header>
                 <main>
@@ -29,9 +34,13 @@ class Cart extends React.Component {
                     <div className="Cart__items-list">
                     <div></div>
                         <div>
-                        {this.state.knives.map(el => 
-                            <CartItem key={el.id} id={el.id} item={el} qty={2} delete={this.delete} changeQty={this.changeQty}></CartItem>
-                        )}
+                        <TransitionGroup>
+                            {this.state.knives.map(el => 
+                                <CSSTransition key={el.id} timeout={200} classNames="CartItem">
+                                    <CartItem key={el.id} id={el.id} item={el} qty={2} delete={this.delete} changeQty={this.changeQty}></CartItem>
+                                </CSSTransition>
+                            )}
+                        </TransitionGroup>
                         </div>
                         <div className="Cart__items-list__price">
                             <p>К оплате:</p>

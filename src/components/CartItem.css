@@ -19,3 +19,10 @@
     color: #FFFFFF;
     border-bottom: solid 2px #828282;
 }
+.CartItem-exit {
+    opacity: 1;
+}
+.CartItem-exit-active {
+    opacity: 0;
+    transition: opacity 200ms linear;
+}
