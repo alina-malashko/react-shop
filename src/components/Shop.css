@@ -13,6 +13,9 @@
     height: 35px;
     margin-top: 18px;
 }
+.Shop__header .active {
+    color: transparent;
+}
 .Shop__header__cart {
     display: flex;
     color: #ADACAC;
@@ -75,6 +78,7 @@
     flex-basis: 24%;
     text-align: center;
     cursor: pointer;
+    color: #ADACAC;
 }
 .Shop__Nav__btn:hover {
     color: #FF0000;
@@ -82,7 +86,7 @@
 .Shop__Nav__btn p {
     margin-top: 30px;
 }
-.active {
+.active .Shop__Nav__btn {
     color: #FF0000;
 }
 .Shop__content {

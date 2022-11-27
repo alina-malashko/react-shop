@@ -1,0 +1,21 @@
+.CartItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 30px 32px;
+    border-bottom: solid 2px #828282;
+}
+.CartItem img:first-child {
+    width: 56px;
+}
+.CartItem img:last-child {
+    cursor: pointer;
+}
+.CartItem input {
+    width: 40px;
+    background-color: #303030;
+    border: none;
+    color: #FFFFFF;
+    border-bottom: solid 2px #828282;
+}

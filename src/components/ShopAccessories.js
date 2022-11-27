@@ -7,65 +7,30 @@ class ShopAccessories extends React.Component {
     state = {
         knives: this.props.knives,
         sortedKnives: this.props.knives,
-        category: "accessories",
         counter: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
         sorted: "all",
         clickedProductsDataArray: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0}
     };
-    updateCurrent = (event) => {
-        if (event.target.closest(".Shop__Nav__btn")) {
-            if (event.target.closest(".Shop__Nav__btn").id === "kitchen") {
-                this.setState({category: "kitchen"});
-            };
-            if (event.target.closest(".Shop__Nav__btn").id === "folding") {
-                this.setState({category: "folding"});
-            };
-            if (event.target.closest(".Shop__Nav__btn").id === "sharpeners") {
-                this.setState({category: "sharpeners"});
-            };
-            if (event.target.closest(".Shop__Nav__btn").id === "accessories") {
-                this.setState({category: "accessories"});
-            };
-        }
-    };
     sort = (event) => {
-        let option;
+        let allKnives = [...this.state.knives];
         if (event.target.id === "new") {
-            option = "Новинка";
-            this.setState({sorted: "new"});
+            let option = "Новинка";
+            let sortedKnives = allKnives.filter(item => item.mark === option);
+            this.setState({sorted: "new", sortedKnives: sortedKnives});
         }
         if (event.target.id === "all") {
-            option = "";
-            this.setState({sorted: "all"});
+            this.setState({sorted: "all", sortedKnives: allKnives});
         }
-        console.log(option)
-        let allKnives;
-        if (this.state.category === "kitchen") {
-          allKnives = [...this.state.kitchen];
-        }
-         if (this.state.category === "folding") {
-          allKnives = [...this.state.folding];
-        }
-         if (this.state.category === "sharpeners") {
-          allKnives = [...this.state.sharpeners];
-        }
-         if (this.state.category === "accessories") {
-          allKnives = [...this.state.accessories];
-        }
-        let sortedKnives = allKnives.filter(item => item.mark === option);
-        console.log(sortedKnives)
     };
     /*countPrice = (price) => {
         let newPrice = this.state.counter + price;
         //this.setState({counter: newPrice});
     };*/
     rememberClicked = (id, counter, price) => {
-        console.log(price)
         let clickedArray = {...this.state.clickedProductsDataArray};
         let newId = id;
         clickedArray[newId] = counter;
         clickedArray["counter"] += price;
-        console.log(clickedArray)
         localStorage.setItem("clickedProductsDataArray", JSON.stringify(clickedArray));
         this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
     };
@@ -75,14 +40,18 @@ class ShopAccessories extends React.Component {
                 <header className="Shop__banner">
                     <div className="Shop__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
-                        <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
-                        <div className="Shop__header__cart">
-                            <img src="https://svgshare.com/i/oHS.svg" alt="Корзина"></img>
-                            {this.state.counter !== 0 ? 
-                                <p>{this.state.counter} р.</p>
-                            : ""
-                            }
-                        </div>
+                        <NavLink to="/">
+                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
+                        </NavLink>
+                        <NavLink to="/cart">
+                            <div className="Shop__header__cart">
+                                <img src="https://svgshare.com/i/oHS.svg" alt="Корзина"></img>
+                                {this.state.counter !== 0 ? 
+                                    <p>{this.state.counter} р.</p>
+                                : ""
+                                }
+                            </div>
+                        </NavLink>
                     </div>
                     <div>
                         <h1 className="Shop__heading">
@@ -96,27 +65,27 @@ class ShopAccessories extends React.Component {
                 <nav>
                     <ul className="Shop__Nav">
                         <NavLink to="/kitchen">
-                            <li className="Shop__Nav__btn" id="kitchen" onClick={this.updateCurrent}>
+                            <li className="Shop__Nav__btn" id="kitchen">
                                 <img src="https://svgshare.com/i/oG5.svg" alt="Кухонные ножи"></img>
-                                <p className={this.state.category === "kitchen" ? "active" : ""}>Кухонные ножи</p>
+                                <p>Кухонные ножи</p>
                             </li>
                         </NavLink>
                         <NavLink to="/folding">
-                            <li className="Shop__Nav__btn" id="folding" onClick={this.updateCurrent}>
+                            <li className="Shop__Nav__btn" id="folding">
                                 <img src="https://svgshare.com/i/oH5.svg" alt="Складные ножи"></img>
-                                <p className={this.state.category === "folding" ? "active" : ""}>Складные ножи</p>
+                                <p>Складные ножи</p>
                             </li>
                         </NavLink>
                         <NavLink to="/sharpeners">
-                            <li className="Shop__Nav__btn" id="sharpeners" onClick={this.updateCurrent}>
+                            <li className="Shop__Nav__btn" id="sharpeners">
                                 <img src="https://svgshare.com/i/oH6.svg" alt="Точилки для ножей"></img>
-                                <p className={this.state.category === "sharpeners" ? "active" : ""}>Точилки для ножей</p>
+                                <p>Точилки для ножей</p>
                             </li>
                         </NavLink>
                         <NavLink to="/accessories">
-                            <li className="Shop__Nav__btn" id="accessories" onClick={this.updateCurrent}>
+                            <li className="Shop__Nav__btn" id="accessories">
                                 <img src="https://svgshare.com/i/oGQ.svg" alt="Аксессуары для ножей"></img>
-                                <p className={this.state.category === "accessories" ? "active" : ""}>Аксессуары для кухни</p>
+                                <p>Аксессуары для кухни</p>
                             </li>
                         </NavLink>
                     </ul>
@@ -128,7 +97,7 @@ class ShopAccessories extends React.Component {
                     </ul>
                 </section>
                 <main className="Shop__content">
-                    {this.state.knives.map(el => {
+                    {this.state.sortedKnives.map(el => {
                         let newId = el.id.toString();
                         if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
                             return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
