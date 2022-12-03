@@ -2,9 +2,6 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Cart from './Cart.js';
 import ShopMain from './ShopMain.js';
-//import { Provider } from 'react-redux';
-//import { createStore, combineReducers } from 'redux';
-//import dataReducer from "./dataReducer";
 import ShopKitchen from './ShopKitchen.js';
 import ShopFolding from './ShopFolding.js';
 import ShopAccessories from './ShopAccessories.js';
@@ -25,7 +22,7 @@ class Router extends React.Component {
                 <Route path="/folding" element={<ShopFolding knives={this.props.folding}></ShopFolding>}></Route>
                 <Route path="/sharpeners" element={<ShopSharpeners knives={this.props.sharpeners}></ShopSharpeners>}></Route>
                 <Route path="/accessories" element={<ShopAccessories knives={this.props.accessories}></ShopAccessories>}></Route>
-                <Route path="/cart" element={<Cart knives={this.props.knives}></Cart>}></Route>
+                <Route path="/cart" element={<Cart></Cart>}></Route>
             </Routes>
         );
     };

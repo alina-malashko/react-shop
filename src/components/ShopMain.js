@@ -2,8 +2,9 @@ import React from "react";
 import "./Shop.css";
 import Item from "./Item.js";
 import { NavLink } from 'react-router-dom';
+import {connect} from "react-redux";
 
-class ShopMain extends React.Component {
+class intShopMain extends React.Component {
     state = {
         knives: this.props.knives,
         sortedKnives: this.props.knives,
@@ -33,6 +34,10 @@ class ShopMain extends React.Component {
         clickedArray["counter"] += price;
         localStorage.setItem("clickedProductsDataArray", JSON.stringify(clickedArray));
         this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
+    };
+    addInCart = (Item) => {
+        console.log(Item);
+        this.props.dispatch({type: "ADD_ITEM", data: Item});
     };
     render() {
         return (
@@ -100,9 +105,9 @@ class ShopMain extends React.Component {
                     {this.state.sortedKnives.map(el => {
                         let newId = el.id.toString();
                         if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
-                            return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         } else {
-                            return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         }
                     })}
                 </main>
@@ -113,5 +118,11 @@ class ShopMain extends React.Component {
         );
     };
 }
+
+const mapStateToProps = function(state) {
+    return {};
+};
+
+const ShopMain = connect(mapStateToProps)(intShopMain);
 
 export default ShopMain;

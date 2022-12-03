@@ -1,6 +1,15 @@
 import React from "react";
 import Router from "./components/Router.js";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+import itemReducer from "./components/itemReducer.js";
+
+let combinedReducers = combineReducers({
+    knives: itemReducer
+});
+
+const store = createStore(combinedReducers);
 
 const knives = 
     [{"id": 1, "img": "https://i.postimg.cc/Vv3CYRcq/image-14.png", "name": "Складной нож SQ01-B", "price": 850, "mark": "Новинка"},
@@ -33,9 +42,11 @@ class App extends React.Component {
     };
     render() {
         return (
-            <BrowserRouter>
-                <Router knives={this.state.knives} kitchen={this.state.kitchen} folding={this.state.folding} sharpeners={this.state.sharpeners} accessories={this.state.accessories}></Router>
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Router knives={this.state.knives} kitchen={this.state.kitchen} folding={this.state.folding} sharpeners={this.state.sharpeners} accessories={this.state.accessories}></Router>
+                </BrowserRouter>
+            </Provider>
         )
     };
 };
