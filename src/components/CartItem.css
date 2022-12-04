@@ -26,3 +26,9 @@
     opacity: 0;
     transition: opacity 200ms linear;
 }
+@media all and (max-width: 460px) {
+    .CartItem {
+        padding: 30px 10px;
+        font-size: 12px;
+    }
+}

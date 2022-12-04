@@ -27,18 +27,6 @@ class Item extends React.Component {
         };
         this.props.addInCart(item);
     };
-    /*addInCart = () => {
-        let item = {
-            id: this.props.item.id,
-            img: this.props.item.img,
-            name: this.props.item.name,
-            price: this.props.item.price,
-            mark: this.props.item.mark,
-            counter: this.state.counter,
-            clicked: this.state.clicked
-        };
-        this.addInCart(item);
-    };*/
     render() {
         return (
             <figure className="ItemCard" key={this.state.id} id={this.state.id}>

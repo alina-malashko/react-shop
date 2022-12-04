@@ -36,12 +36,11 @@ class intShopMain extends React.Component {
         this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
     };
     addInCart = (Item) => {
-        console.log(Item);
         this.props.dispatch({type: "ADD_ITEM", data: Item});
     };
     render() {
         return (
-            <div>
+            <div className="wrapper">
                 <header className="Shop__banner">
                     <div className="Shop__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>

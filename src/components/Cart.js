@@ -27,18 +27,29 @@ class intCart extends React.Component {
         this.props.dispatch({type: "CHANGE_QTY", data: item});
     };
     sendInfoToServer = () => {
-        let info = {
-            name: this.inputName.current.value,
-            phone: this.inputPhone.current.value,
-            email: this.inputEmail.current.value,
-            items: this.state.knives,
-        }
-        this.setState({orderInfo: info});
-        this.setState({content: "thankyou"});
+        const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+        const PHONE_REGEXP = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/iu;
+        if (this.inputName.current.value === "" || this.inputPhone.current.value === "" || this.inputEmail.current.value === "") {
+            alert("Вы не ввели данные!");
+        } else if (!EMAIL_REGEXP.test(this.inputEmail.current.value)) {
+            alert("Неверно указан email!");
+        } else if (!PHONE_REGEXP.test(this.inputPhone.current.value)) {
+            alert("Неверно указан номер телефона!");
+        } else {
+            let info = {
+                name: this.inputName.current.value,
+                phone: this.inputPhone.current.value,
+                email: this.inputEmail.current.value,
+                items: [...this.state.knives],
+            }
+            this.setState({orderInfo: info});
+            this.setState({content: "thankyou"});
+            this.props.dispatch({type: "CLEAN_CART"});
+        };
     };
     render() {
         return (
-            <div>
+            <div className="wrapper">
                 <header>
                     <div className="Cart__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
@@ -49,65 +60,63 @@ class intCart extends React.Component {
                 </header>
                 <main>
                     {this.state.content === "loader" ?
-                        <p>Loading...</p>
+                        <p className="Cart__heading">Загрузка...</p>
                     : ""}
-                    {this.state.content === "cart" ?
-                    <div>
-                    <h1 className="Cart__heading">Корзина</h1>
-                    <div className="Cart__items-list">
-
-                        <TransitionGroup>
-                            {this.props.knives.map(el => 
-                                <CSSTransition key={el.id} timeout={200} classNames="CartItem">
-                                    <CartItem key={el.id} id={el.id} item={el} delete={this.delete} changeQty={this.changeQty}></CartItem>
-                                </CSSTransition>
-                            )}
-                        </TransitionGroup>
-                    
-                        <div className="Cart__items-list__price">
-                            <p>К оплате:</p>
-                            <p className="Cart__items-list__price__total">{this.props.totalPrice} р.</p>
-                        </div>
-                    </div>
-                    <div className="Cart__form">
-                        <p className="Cart__form__heading">Для подтверждения заказа - введите ваши данные и мы перезвоним вам</p>
-                        <div className="Cart__form__content">
-                            <form>
-                                <div className="Cart__form__content__input">
-                                    <input type="text" defaultValue="" placeholder="Имя Фамилия" ref={this.inputName}></input>
+                    {this.state.content === "cart" && this.props.knives.length === 0 ?
+                        <div className="Cart__heading">Ваша корзина пуста!</div>
+                    : ""}
+                    {this.state.content === "cart" && this.props.knives.length !== 0 ?
+                        <div>
+                            <h1 className="Cart__heading">Корзина</h1>
+                            <div className="Cart__items-list">
+                                <TransitionGroup>
+                                    {this.props.knives.map(el => 
+                                        <CSSTransition key={el.id} timeout={200} classNames="CartItem">
+                                            <CartItem key={el.id} id={el.id} item={el} delete={this.delete} changeQty={this.changeQty}></CartItem>
+                                        </CSSTransition>
+                                    )}
+                                </TransitionGroup>
+                                <div className="Cart__items-list__price">
+                                    <p>К оплате:</p>
+                                    <p className="Cart__items-list__price__total">{this.props.totalPrice} р.</p>
                                 </div>
-                                <div className="Cart__form__content__input">
-                                    <input type="tel" defaultValue="" placeholder="+7(___)___-__-__" ref={this.inputPhone}></input>
+                            </div>
+                            <div className="Cart__form">
+                                <p className="Cart__form__heading">Для подтверждения заказа - введите ваши данные и мы перезвоним вам</p>
+                                <div className="Cart__form__content">
+                                    <form>
+                                        <div className="Cart__form__content__input">
+                                            <input type="text" defaultValue="" placeholder="Имя Фамилия" ref={this.inputName}></input>
+                                        </div>
+                                        <div className="Cart__form__content__input">
+                                            <input type="tel" defaultValue="" placeholder="+7(___)___-__-__" ref={this.inputPhone}></input>
+                                        </div>
+                                        <div className="Cart__form__content__input">
+                                            <input type="email" defaultValue="" placeholder="Ваша почта" ref={this.inputEmail}></input>
+                                        </div>
+                                    </form>
+                                    <div className="Cart__form__confirm">
+                                        <p>Нажимая «Отправить форму», подтверждаю, что я ознакомлен с условиями <a href="#">Публичного договора оферты</a> и <a href="#">Политикой конфиденциальности</a></p>
+                                        <input type="button" value="ОТПРАВИТЬ ФОРМУ" onClick={this.sendInfoToServer}></input>
+                                    </div>
                                 </div>
-                                <div className="Cart__form__content__input">
-                                    <input type="email" defaultValue="" placeholder="Ваша почта" ref={this.inputEmail}></input>
-                                </div>
-                            </form>
-                            <div className="Cart__form__confirm">
-                                <p>Нажимая «Отправить форму», подтверждаю, что я ознакомлен с условиями <a href="#">Публичного договора оферты</a> и <a href="#">Политикой конфиденциальности</a></p>
-                                <input type="button" value="ОТПРАВИТЬ ФОРМУ" onClick={this.sendInfoToServer}></input>
                             </div>
                         </div>
-                    </div>
-                    </div>
                     : ""}
                     {this.state.content === "thankyou" ?
-                    <div>
-                        <p>Благодарим за заказ,{this.state.orderInfo.name}!</p>
-                        <p>С вами свяжутся по номеру {this.state.orderInfo.phone}</p>
-                        <p>Детали заказа отправлены на {this.state.orderInfo.email}</p>
-                        <p>В Вашем заказе:</p>
-                            {this.state.orderInfo.items.map(el => 
-                                <ul key={el.id}>
-                                    <li>
-                                        {el.name}
+                        <div className="Order__info">
+                            <p className="Order__info__heading">Благодарим за заказ, {this.state.orderInfo.name}!</p>
+                            <p>С вами свяжутся по номеру {this.state.orderInfo.phone}</p>
+                            <p>Детали заказа отправлены на {this.state.orderInfo.email}</p>
+                            <p>В Вашем заказе:</p>
+                            <ul>
+                                {this.state.orderInfo.items.map(el => 
+                                    <li key={el.id}>
+                                        {el.name} в количестве <span>{el.counter}</span> шт. стоимостью <span>{el.price}</span> p.
                                     </li>
-                                    <li>
-                                        {el.price} p.
-                                    </li>
-                                </ul>
-                            )}
-                    </div>
+                                )}
+                            </ul>
+                        </div>
                     : ""}
                 </main>
                 <footer className="Cart__footer">

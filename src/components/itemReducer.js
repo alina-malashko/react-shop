@@ -35,6 +35,12 @@ function itemReducer (state = initState, action) {
             newState.items[index].price = action.data.price;
             return newState;
         }
+        case "CLEAN_CART": {
+            let newState = {...state};
+            newState.items.length = 0;
+            newState.totalPrice = 0;
+            return newState;
+        }
         default: 
             return state;
     }

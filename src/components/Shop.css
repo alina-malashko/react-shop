@@ -1,3 +1,8 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
 .Shop__header {
     position: fixed;
     top: 0;
@@ -8,6 +13,7 @@
     height: 70px;
     display: flex;
     justify-content: space-around;
+    flex: 1 0 auto;
 }
 .Shop__header img {
     height: 35px;
@@ -44,6 +50,9 @@
     width: 60%;
     margin-top: 24px;
 }
+nav {
+    flex: 1 0 auto;
+}
 .Shop__Nav {
     width: 60%;
     display: flex;
@@ -52,6 +61,7 @@
     color: #ADACAC;
 }
 .Shop__categories {
+    flex: 1 0 auto;
     width: 24%;
     margin: 30px auto;
     text-transform: uppercase;
@@ -90,6 +100,7 @@
     color: #FF0000;
 }
 .Shop__content {
+    flex: 1 0 auto;
     width: 83%;
     margin: 80px auto;
     display: grid;
@@ -102,5 +113,53 @@
     color:#FFFFFF;
     font-size: 12px;
     line-height: 21px;
-    padding: 32px 0px 32px 120px;
+    padding: 32px 0px 32px 9%;
+    flex: 0 0 auto;
+}
+@media all and (max-width: 800px) {
+    .Shop__banner {
+        padding: 100px 100px;
+        height: 390px;
+    }
+    .Shop__heading {
+        font-size: 26px;
+        line-height: 20px;
+    }
+    .Shop__subheading {
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .Shop__Nav {
+        margin: 30px auto;
+        width: 80%;
+    }
+    .Shop__categories {
+        margin: 15px auto;
+        width: 40%;
+    }
+    .Shop__content {
+        margin: 40px auto;
+        grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+        grid-auto-rows: 390px;
+    }
+}
+@media all and (max-width: 560px) {
+    .Shop__banner {
+        padding: 100px 60px;
+    }
+    .Shop__Nav__btn p {
+        font-size: 12px;
+    }
+    .Shop__categories {
+        font-size: 14px;
+    }
+    .Shop__header__cart p {
+        font-size: 16px;
+    }
+}
+@media all and (max-width: 460px) {
+    .Shop__content {
+        grid-template-columns: repeat(auto-fill, minmax(70%, 1fr));
+        grid-auto-rows: 420px;
+    }
 }

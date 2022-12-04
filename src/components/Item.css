@@ -66,4 +66,9 @@
     color: #FF3232;
     padding-left: 28px;
 }
+@media all and (max-width: 800px) {
+    .ItemCard__image {
+        padding: 65px 10px 40px;
+    }
+}
 
