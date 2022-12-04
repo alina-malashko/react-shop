@@ -4,7 +4,6 @@ import "./CartItem.css";
 class CartItem extends React.Component {
     state = {
         item: this.props.item,
-        //qty: this.props.qty
     };
     delete = (event) => {
         this.props.delete(this.state.item);
@@ -14,7 +13,11 @@ class CartItem extends React.Component {
         if (event.target.value === "") {
             value = 0;
         }
-        this.props.changeQty(Number(value));
+        let item = {...this.state.item};
+        let newPrice = item.singleItemPrice * Number(value);
+        item.price = newPrice;
+        item.counter = Number(value);
+        this.props.changeQty(item);
     };
     render() {
         return (

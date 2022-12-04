@@ -24,8 +24,7 @@ class intCart extends React.Component {
         this.props.dispatch({type: "DELETE_ITEM", data: item});
     };
     changeQty = (item) => {
-        console.log(item);
-        //this.props.dispatch({type: "CHANGE_QTY", data: })
+        this.props.dispatch({type: "CHANGE_QTY", data: item});
     };
     sendInfoToServer = () => {
         let info = {
@@ -34,7 +33,6 @@ class intCart extends React.Component {
             email: this.inputEmail.current.value,
             items: this.state.knives,
         }
-        console.log(info);
         this.setState({orderInfo: info});
         this.setState({content: "thankyou"});
     };
