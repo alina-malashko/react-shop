@@ -20,13 +20,12 @@ class intCart extends React.Component {
         content: "cart",
         orderInfo: ""
     };
-    delete = (id) => {
-        let itemsList = [...this.state.knives];
-        itemsList = itemsList.filter(item => item.id != id);
-        this.setState({knives: itemsList});
+    delete = (item) => {
+        this.props.dispatch({type: "DELETE_ITEM", data: item});
     };
-    changeQty = (qty, id) => {
-        console.log(qty, id)
+    changeQty = (item) => {
+        console.log(item);
+        //this.props.dispatch({type: "CHANGE_QTY", data: })
     };
     sendInfoToServer = () => {
         let info = {
@@ -60,16 +59,16 @@ class intCart extends React.Component {
                     <div className="Cart__items-list">
 
                         <TransitionGroup>
-                            {this.state.knives.map(el => 
+                            {this.props.knives.map(el => 
                                 <CSSTransition key={el.id} timeout={200} classNames="CartItem">
-                                    <CartItem key={el.id} id={el.id} item={el} qty={el.counter} delete={this.delete} changeQty={this.changeQty}></CartItem>
+                                    <CartItem key={el.id} id={el.id} item={el} delete={this.delete} changeQty={this.changeQty}></CartItem>
                                 </CSSTransition>
                             )}
                         </TransitionGroup>
                     
                         <div className="Cart__items-list__price">
                             <p>К оплате:</p>
-                            <p className="Cart__items-list__price__total">{this.state.totalPrice} р.</p>
+                            <p className="Cart__items-list__price__total">{this.props.totalPrice} р.</p>
                         </div>
                     </div>
                     <div className="Cart__form">
