@@ -130,7 +130,7 @@ class intCart extends React.Component {
 const mapStateToProps = function(state) {
     return {
         knives: state.knives.items,
-        totalPrice: state.knives.totalPrice
+        totalPrice: state.knives.totalPrice,
     };
 };
 

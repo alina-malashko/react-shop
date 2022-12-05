@@ -8,9 +8,9 @@ class intShopMain extends React.Component {
     state = {
         knives: this.props.knives,
         sortedKnives: this.props.knives,
-        counter: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
+        totalPrice: this.props.totalPrice,
         sorted: "all",
-        clickedProductsDataArray: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0}
+        clickedProducts: this.props.clickedProducts
     };
     sort = (event) => {
         let allKnives = [...this.state.knives];
@@ -23,17 +23,11 @@ class intShopMain extends React.Component {
             this.setState({sorted: "all", sortedKnives: allKnives});
         }
     };
-    /*countPrice = (price) => {
-        let newPrice = this.state.counter + price;
-        //this.setState({counter: newPrice});
-    };*/
-    rememberClicked = (id, counter, price) => {
-        let clickedArray = {...this.state.clickedProductsDataArray};
-        let newId = id;
-        clickedArray[newId] = counter;
-        clickedArray["counter"] += price;
-        localStorage.setItem("clickedProductsDataArray", JSON.stringify(clickedArray));
-        this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
+    rememberClicked = (id, counter) => {
+        let clickedObj = {...this.state.clickedProducts};
+        clickedObj["id"] = id;
+        clickedObj["counter"] = counter;
+        this.props.dispatch({type: "REMEMBER_CLICKED", data: clickedObj});
     };
     addInCart = (Item) => {
         this.props.dispatch({type: "ADD_ITEM", data: Item});
@@ -50,8 +44,8 @@ class intShopMain extends React.Component {
                         <NavLink to="/cart">
                             <div className="Shop__header__cart">
                                 <img src="https://svgshare.com/i/oHS.svg" alt="Корзина"></img>
-                                {this.state.counter !== 0 ? 
-                                    <p>{this.state.counter} р.</p>
+                                {this.props.totalPrice !== 0 ? 
+                                    <p>{this.props.totalPrice} р.</p>
                                 : ""
                                 }
                             </div>
@@ -103,8 +97,10 @@ class intShopMain extends React.Component {
                 <main className="Shop__content">
                     {this.state.sortedKnives.map(el => {
                         let newId = el.id.toString();
-                        if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
-                            return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
+                        console.log(newId)
+                        console.log(this.props.clickedProducts)
+                        if (this.props.clickedProducts.hasOwnProperty(newId)) {
+                            return <Item key={el.id} item={el} counter={this.state.clickedProducts[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         } else {
                             return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         }
@@ -119,7 +115,10 @@ class intShopMain extends React.Component {
 }
 
 const mapStateToProps = function(state) {
-    return {};
+    return {
+        clickedProducts: state.knives.clickedProducts,
+        totalPrice: state.knives.totalPrice
+    };
 };
 
 const ShopMain = connect(mapStateToProps)(intShopMain);

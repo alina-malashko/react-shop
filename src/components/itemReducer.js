@@ -1,5 +1,6 @@
 const initState = {
     items: [],
+    clickedProducts: {},
     totalPrice: 0
 };
 
@@ -17,6 +18,11 @@ function itemReducer (state = initState, action) {
                 newState.items.push(newItem);
             }
             newState.totalPrice += action.data.price;
+            return newState;
+        }
+        case "REMEMBER_CLICKED": {
+            let newState = {...state};
+            newState.clickedProducts[action.data.id] = action.data.counter;
             return newState;
         }
         case "DELETE_ITEM": {
@@ -39,6 +45,7 @@ function itemReducer (state = initState, action) {
             let newState = {...state};
             newState.items.length = 0;
             newState.totalPrice = 0;
+            newState.clickedProducts = {};
             return newState;
         }
         default: 

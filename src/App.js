@@ -4,12 +4,26 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import itemReducer from "./components/itemReducer.js";
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; 
+import { PersistGate } from 'redux-persist/integration/react';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
 
 let combinedReducers = combineReducers({
     knives: itemReducer
 });
 
-const store = createStore(combinedReducers);
+const persistedReducer = persistReducer(persistConfig, combinedReducers);
+
+export const store = createStore(persistedReducer);
+export const persistor = persistStore(store);
+
+
+//const store = createStore(combinedReducers);
 
 const knives = 
     [{"id": 1, "img": "https://i.postimg.cc/Vv3CYRcq/image-14.png", "name": "Складной нож SQ01-B", "price": 850, "mark": "Новинка"},
@@ -43,9 +57,11 @@ class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
                 <BrowserRouter>
                     <Router knives={this.state.knives} kitchen={this.state.kitchen} folding={this.state.folding} sharpeners={this.state.sharpeners} accessories={this.state.accessories}></Router>
                 </BrowserRouter>
+                </PersistGate>
             </Provider>
         )
     };
