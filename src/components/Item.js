@@ -43,7 +43,7 @@ class Item extends React.Component {
                         {this.state.clicked === true ?
                         <div className="Item__in-cart">
                             &#10004;
-                            {this.state.counter}
+                            {this.props.counter}
                         </div>
                         : ""
                         }

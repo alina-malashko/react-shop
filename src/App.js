@@ -22,9 +22,6 @@ const persistedReducer = persistReducer(persistConfig, combinedReducers);
 export const store = createStore(persistedReducer);
 export const persistor = persistStore(store);
 
-
-//const store = createStore(combinedReducers);
-
 const knives = 
     [{"id": 1, "img": "https://i.postimg.cc/Vv3CYRcq/image-14.png", "name": "Складной нож SQ01-B", "price": 850, "mark": "Новинка"},
             {"id": 2, "img": "https://i.postimg.cc/Vv3CYRcq/image-14.png", "name": "Складной нож SQ02-B", "price": 860, "mark": ""},

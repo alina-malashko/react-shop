@@ -15,8 +15,6 @@ class intCart extends React.Component {
     state = {
         knives: this.props.knives,
         totalPrice: this.props.totalPrice,
-        //clickedProducts: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0},
-        //totalPrice: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
         content: "cart",
         orderInfo: ""
     };
@@ -25,6 +23,11 @@ class intCart extends React.Component {
     };
     changeQty = (item) => {
         this.props.dispatch({type: "CHANGE_QTY", data: item});
+    };
+    cleanCart = (event) => {
+        if (this.props.totalPrice === 0) {
+            this.props.dispatch({type: "CLEAN_CART"});
+        }
     };
     sendInfoToServer = () => {
         const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
@@ -35,6 +38,8 @@ class intCart extends React.Component {
             alert("Неверно указан email!");
         } else if (!PHONE_REGEXP.test(this.inputPhone.current.value)) {
             alert("Неверно указан номер телефона!");
+        } else if (this.props.totalPrice === 0) {
+            alert("В корзине нет товаров");
         } else {
             let info = {
                 name: this.inputName.current.value,
@@ -54,7 +59,7 @@ class intCart extends React.Component {
                     <div className="Cart__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
                         <NavLink to="/">
-                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
+                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип" ></img>
                         </NavLink>
                     </div>
                 </header>

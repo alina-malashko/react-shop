@@ -2,14 +2,15 @@ import React from "react";
 import "./Shop.css";
 import Item from "./Item.js";
 import { NavLink } from 'react-router-dom';
+import {connect} from "react-redux";
+import CartBtn from "./CartBtn";
 
-class ShopKitchen extends React.Component {
+class intShopKitchen extends React.Component {
     state = {
         knives: this.props.knives,
         sortedKnives: this.props.knives,
-        counter: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")).counter : 0,
         sorted: "all",
-        clickedProductsDataArray: localStorage.hasOwnProperty("clickedProductsDataArray") ? JSON.parse(localStorage.getItem("clickedProductsDataArray")) : {counter: 0}
+        clickedProducts: this.props.clickedProducts
     };
     sort = (event) => {
         let allKnives = [...this.state.knives];
@@ -22,21 +23,18 @@ class ShopKitchen extends React.Component {
             this.setState({sorted: "all", sortedKnives: allKnives});
         }
     };
-    /*countPrice = (price) => {
-        let newPrice = this.state.counter + price;
-        //this.setState({counter: newPrice});
-    };*/
-    rememberClicked = (id, counter, price) => {
-        let clickedArray = {...this.state.clickedProductsDataArray};
-        let newId = id;
-        clickedArray[newId] = counter;
-        clickedArray["counter"] += price;
-        localStorage.setItem("clickedProductsDataArray", JSON.stringify(clickedArray));
-        this.setState({clickedProductsDataArray: clickedArray, counter: clickedArray["counter"]});
+    rememberClicked = (id, counter) => {
+        let clickedObj = {...this.state.clickedProducts};
+        clickedObj["id"] = id;
+        clickedObj["counter"] = counter;
+        this.props.dispatch({type: "REMEMBER_CLICKED", data: clickedObj});
+    };
+    addInCart = (Item) => {
+        this.props.dispatch({type: "ADD_ITEM", data: Item});
     };
     render() {
         return (
-            <div>
+            <div className="wrapper">
                 <header className="Shop__banner">
                     <div className="Shop__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
@@ -44,13 +42,7 @@ class ShopKitchen extends React.Component {
                             <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип"></img>
                         </NavLink>
                         <NavLink to="/cart">
-                            <div className="Shop__header__cart">
-                                <img src="https://svgshare.com/i/oHS.svg" alt="Корзина"></img>
-                                {this.state.counter !== 0 ? 
-                                    <p>{this.state.counter} р.</p>
-                                : ""
-                                }
-                            </div>
+                            <CartBtn></CartBtn>
                         </NavLink>
                     </div>
                     <div>
@@ -99,10 +91,10 @@ class ShopKitchen extends React.Component {
                 <main className="Shop__content">
                     {this.state.sortedKnives.map(el => {
                         let newId = el.id.toString();
-                        if (this.state.clickedProductsDataArray.hasOwnProperty(newId)) {
-                            return <Item key={el.id} item={el} counter={this.state.clickedProductsDataArray[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                        if (this.props.clickedProducts.hasOwnProperty(newId)) {
+                            return <Item key={el.id} item={el} counter={this.props.clickedProducts[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         } else {
-                            return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked}></Item>
+                            return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         }
                     })}
                 </main>
@@ -113,5 +105,13 @@ class ShopKitchen extends React.Component {
         );
     };
 }
+
+const mapStateToProps = function(state) {
+    return {
+        clickedProducts: state.knives.clickedProducts,
+    };
+};
+
+const ShopKitchen = connect(mapStateToProps)(intShopKitchen);
 
 export default ShopKitchen;
