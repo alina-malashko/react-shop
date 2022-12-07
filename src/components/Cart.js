@@ -59,7 +59,7 @@ class intCart extends React.Component {
                     <div className="Cart__header">
                         <a href="tel:89811201117"><img src="https://svgshare.com/i/oHH.svg" alt="Позвонить"></img></a>
                         <NavLink to="/">
-                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип" ></img>
+                            <img src="https://i.postimg.cc/D0bQc1Yj/logo.png" alt="Логотип" onClick={this.cleanCart}></img>
                         </NavLink>
                     </div>
                 </header>

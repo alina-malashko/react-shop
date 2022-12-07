@@ -91,10 +91,10 @@ class intShopMain extends React.Component {
                 <main className="Shop__content">
                     {this.state.sortedKnives.map(el => {
                         let newId = el.id.toString();
-                        if (this.props.clickedProducts.hasOwnProperty(newId)) {
-                            return <Item key={el.id} item={el} counter={this.props.clickedProducts[newId]} clicked={true} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
+                        if (this.state.clickedProducts.hasOwnProperty(newId)) {
+                            return <Item key={el.id} item={el} counter={this.state.clickedProducts[newId]} clicked={true} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         } else {
-                            return <Item key={el.id} item={el} counter={0} clicked={false} countPrice={this.countPrice} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
+                            return <Item key={el.id} item={el} counter={0} clicked={false} rememberClicked={this.rememberClicked} addInCart={this.addInCart}></Item>
                         }
                     })}
                 </main>
