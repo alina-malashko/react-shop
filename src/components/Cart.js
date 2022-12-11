@@ -16,7 +16,7 @@ class intCart extends React.Component {
         knives: this.props.knives,
         totalPrice: this.props.totalPrice,
         content: "cart",
-        orderInfo: ""
+        orderInfo: "",
     };
     delete = (item) => {
         this.props.dispatch({type: "DELETE_ITEM", data: item});
@@ -47,10 +47,42 @@ class intCart extends React.Component {
                 email: this.inputEmail.current.value,
                 items: [...this.state.knives],
             }
-            this.setState({orderInfo: info});
-            this.setState({content: "thankyou"});
+            let user = info.email.split("@")[0] + Math.floor(Math.random() * 1000);
+            this.setState({content: "loader"});
             this.props.dispatch({type: "CLEAN_CART"});
+            this.sendUserInfo(info, user);
         };
+    };
+    sendUserInfo = async (info, user) => {
+        let ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php";
+        let sp = new URLSearchParams();
+        sp.append('f', 'INSERT');
+        sp.append('n', user);
+        sp.append('v', JSON.stringify(info));
+        try {
+            let response = await fetch(ajaxHandlerScript,{ method: 'post', body: sp });
+            let data = await response.json();
+            data.result === "" ? alert("Что-то пошло не так!") : alert("Заказ ушел на сервер!");
+            this.showOrder(user);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    };
+    showOrder = async (user) => {
+        let ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php";
+        let sp = new URLSearchParams();
+        sp.append('f', 'READ');
+        sp.append('n', user);
+        try {
+            let response = await fetch(ajaxHandlerScript,{ method: 'post', body: sp });
+            let data = await response.json();
+            let obj = JSON.parse(data.result);
+            this.setState({orderInfo: obj, content: "thankyou"});
+        }
+        catch (error) {
+            console.error(error);
+        }
     };
     render() {
         return (

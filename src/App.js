@@ -51,20 +51,17 @@ class App extends React.Component {
         }
     }
     render() {
-        if (!this.state.dataLoaded) {
+        if (this.state.dataLoaded) {
             return (
-                <h1>Загрузка...</h1>
+                <Provider store={store}>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <BrowserRouter>
+                            <Router knives={this.state.knives} kitchen={this.state.kitchen} folding={this.state.folding} sharpeners={this.state.sharpeners} accessories={this.state.accessories}></Router>
+                        </BrowserRouter>
+                    </PersistGate>
+                </Provider>
             )
         }
-        return (
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <BrowserRouter>
-                        <Router knives={this.state.knives} kitchen={this.state.kitchen} folding={this.state.folding} sharpeners={this.state.sharpeners} accessories={this.state.accessories}></Router>
-                    </BrowserRouter>
-                </PersistGate>
-            </Provider>
-        )
     };
 };
 
