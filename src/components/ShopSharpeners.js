@@ -22,6 +22,10 @@ class intShopSharpeners extends React.Component {
         if (event.target.id === "all") {
             this.setState({sorted: "all", sortedKnives: allKnives});
         }
+        if (event.target.id === "price") {
+            let sortedKnives = allKnives.sort((a, b) => a.price - b.price);
+            this.setState({sorted: "price", sortedKnives: sortedKnives});
+        }
     };
     rememberClicked = (id, counter) => {
         let clickedObj = {...this.state.clickedProducts};
@@ -86,6 +90,7 @@ class intShopSharpeners extends React.Component {
                     <ul>
                         <li onClick={this.sort} id="all" className={this.state.sorted === "all" ? "sort" : ""}>Все</li>
                         <li onClick={this.sort} id="new" className={this.state.sorted === "new" ? "sort" : ""}>Новинки</li>
+                        <li onClick={this.sort} id="price" className={this.state.sorted === "price" ? "sort" : ""}>По цене</li>
                     </ul>
                 </section>
                 <main className="Shop__content">
