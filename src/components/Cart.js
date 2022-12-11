@@ -48,6 +48,7 @@ class intCart extends React.Component {
                 items: [...this.state.knives],
             }
             let user = info.email.split("@")[0] + Math.floor(Math.random() * 1000);
+            if (user.includes(".")) user = user.replace(".", "_");
             this.setState({content: "loader"});
             this.props.dispatch({type: "CLEAN_CART"});
             this.sendUserInfo(info, user);
