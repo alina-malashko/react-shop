@@ -1,5 +1,5 @@
 import React from "react";
-import "./Shop.css";
+import "./css/Shop.css";
 import {connect} from "react-redux";
 
 class intCartBtn extends React.Component {

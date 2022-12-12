@@ -7,6 +7,7 @@ import itemReducer from "./components/itemReducer.js";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; 
 import { PersistGate } from 'redux-persist/integration/react';
+import "./components/css/Shop.css";
 
 const persistConfig = {
     key: 'root',
@@ -60,8 +61,12 @@ class App extends React.Component {
                         </BrowserRouter>
                     </PersistGate>
                 </Provider>
-            )
-        }
+            );
+        } else {
+            return (
+                <h1 className="Shop__heading">Загрузка...</h1>
+            );
+        };
     };
 };
 

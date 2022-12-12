@@ -34,7 +34,7 @@
     text-indent: -20px;
 }
 .ItemCard__add-button::before {
-    content: url("img/cart.svg");
+    content: url("../img/cart.svg");
     position: absolute;
     right: 0;
     top: 0;
