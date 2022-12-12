@@ -6,6 +6,9 @@
     padding: 30px 32px;
     border-bottom: solid 2px #828282;
 }
+.CartItem p:first-of-type {
+    width: 190px;
+}
 .CartItem img:first-child {
     width: 56px;
 }
@@ -27,9 +30,12 @@
     opacity: 0;
     transition: opacity 200ms linear;
 }
-@media all and (max-width: 460px) {
+@media all and (max-width: 560px) {
     .CartItem {
         padding: 30px 10px;
         font-size: 12px;
+    }
+    .CartItem p:first-of-type {
+        width: 140px;
     }
 }
