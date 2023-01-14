@@ -134,7 +134,7 @@ class intCart extends React.Component {
                                         </div>
                                     </form>
                                     <div className="Cart__form__confirm">
-                                        <p>Нажимая «Отправить форму», подтверждаю, что я ознакомлен с условиями <a href="#">Публичного договора оферты</a> и <a href="#">Политикой конфиденциальности</a></p>
+                                        <p>Нажимая «Отправить форму», подтверждаю, что я ознакомлен с условиями <a href="https://github.com/alina-malashko">Публичного договора оферты</a> и <a href="https://github.com/alina-malashko">Политикой конфиденциальности</a></p>
                                         <input type="button" value="ОТПРАВИТЬ ФОРМУ" onClick={this.sendInfoToServer}></input>
                                     </div>
                                 </div>

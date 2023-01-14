@@ -27,7 +27,7 @@ function itemReducer (state = initState, action) {
         }
         case "DELETE_ITEM": {
             let newState = {...state};
-            let newItems = newState.items.filter(item => item.id != action.data.id);
+            let newItems = newState.items.filter(item => item.id !== action.data.id);
             newState.items = newItems;
             newState.totalPrice -= action.data.price;
             Reflect.deleteProperty(newState.clickedProducts, action.data.id)
@@ -41,7 +41,7 @@ function itemReducer (state = initState, action) {
             newState.items[index].counter = action.data.counter;
             newState.items[index].price = action.data.price;
             newState.clickedProducts[action.data.id] = action.data.counter;
-            if (action.data.counter == 0) {
+            if (action.data.counter === 0) {
                 Reflect.deleteProperty(newState.clickedProducts, action.data.id)
             }
             return newState;
